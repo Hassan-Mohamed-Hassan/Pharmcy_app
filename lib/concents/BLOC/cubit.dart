@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,7 +33,8 @@ class cubit extends Cubit<states> {
     return BlocProvider.of(context);
   }
   bool scur = true;
-
+  var formkey=GlobalKey<FormState>();
+bool bottomsheetShow=false;
   void rebuild(){
     loding=false;
     emit(scussfirestoretate());
@@ -73,7 +75,6 @@ class cubit extends Cubit<states> {
     });
 
   }
-
 
   Future Login(phone,context,)async{
 
@@ -200,11 +201,12 @@ class cubit extends Cubit<states> {
       FirebaseFirestore.instance.collection('users').doc('$UserName').update({'phone':'$phone'}).then((value){
       }).catchError((e){});
     }
+
   Future savedatainfirestor(name, phone, email, uid, context)async {
     usermodel model = usermodel(name, email, phone, uid);
     FirebaseFirestore.instance
         .collection('users')
-        .doc('$name')
+        .doc('$uid')
         .set(model.toJson())
         .then((value) {
           emit(scussfirestoredrags());
@@ -213,6 +215,43 @@ class cubit extends Cubit<states> {
       print(er.toString());
       emit(errorfirestorestate());
     });
+  }
+
+  Future getProfile(uid)async{
+    return await FirebaseFirestore.instance
+        .collection('users')
+        .doc('$uid').get().then((value){
+          controllername.text='${value.data()!['name']}';
+          controllerphone.text='${value.data()!['phone']}';
+          controlleremail.text='${value.data()!['email']}';
+          print(value.data());
+          emit(scussfirestoredrags());
+    });
+  }
+  bool thisphoneExist=false;
+  Future updateProfile(uid,name,phone,email)async{
+    List AllPhones=[];
+    await FirebaseFirestore.instance.collection('users').get().then((QuerySnapshot snapshot){
+      snapshot.docs.forEach((element) {
+        if(element['uid']!=uid)  AllPhones.add('${element['phone']}');
+        print(element['phone']);
+      });
+    }).then((value) async{
+      if(AllPhones.contains(phone)){
+        thisphoneExist=true;
+        emit(scussfirestoredrags());
+      }
+      else{
+        thisphoneExist=false;
+        return await FirebaseFirestore.instance
+            .collection('users')
+            .doc('$uid').set({'name':'$name','phone':'$phone','uid':'$uid','email':'$email'}).then((value){
+          emit(scussfirestoredrags());
+        });
+      }
+    });
+
+
   }
 
   void add_product(name, price, code, m_date, E_date, count, place) {
@@ -437,11 +476,21 @@ emit(scussfirestoretate());
     Update_product(),
   ];
 
-  List<Icon> icon = [
-    Icon(Icons.shopping_cart),
-    Icon(Icons.add),
-    Icon(Icons.search),
-    Icon(Icons.update),
+  List icon = [
+    Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Image.asset('image/selling.png'),
+    ),
+    Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Image.asset('image/add.png'),
+    ),
+    Padding(
+        padding: EdgeInsets.all(8),
+        child: Image.asset('image/search.png')),
+    Padding(
+        padding: EdgeInsets.all(8),
+        child: Image.asset('image/update.png')),
   ];
 
   void changeNav(index) {
@@ -552,26 +601,27 @@ emit(scussfirestoretate());
   }
 
   Future logout(context) async{
-   await confirm(
+    if(await confirm(
       context,
       content: Text(lang?'Are You Sure Want To Logout':'هل انت متأكد انك تريد الخروج',style:
       TextStyle(fontSize: 20,color: Colors.blue)
         ,),
       textOK: const Text('OK'),
       textCancel: const Text('Cancel'),
-    ).then((value){
-     print('.........///////////');
-      CacheHelper.saveData(key: "UID", value: '').then((value){
+   )) {
+      print('.........///////////');
+      CacheHelper.saveData(key: "UID", value: '').then((value) {
         print(CacheHelper.getData(key: "UID"));
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => LoginScreen()),
+              (Route<dynamic> route) => false,
+        );
         print('.........///////////');
       });
-    emit(scussfirestoretate());
-    });
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => LoginScreen()),
-          (Route<dynamic> route) => false,
-    );
+      emit(scussfirestoretate());
+    }
+
   }
  Future DeletUser() async{
    await user?.delete();

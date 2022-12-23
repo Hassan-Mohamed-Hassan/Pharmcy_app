@@ -12,12 +12,13 @@ Widget textformfiled({suffix,scure,type,controler,vald,name,prefix,ontap}){
     decoration: InputDecoration(
         label: Text(name),
         suffixIcon:suffix,
-        prefixIcon:Icon(prefix),
+        prefixIcon:Icon(prefix,color: Colors.blue,),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20),
         )
     ),
     obscureText: scure??false,
+    validator: vald,
     controller: controler,
     keyboardType:type,
   );

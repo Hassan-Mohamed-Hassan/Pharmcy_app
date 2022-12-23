@@ -1,6 +1,7 @@
 import 'package:barcode_widget/barcode_widget.dart';
 import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,46 +28,52 @@ class _Sales_productState extends State<Sales_productt> {
           cubit c=cubit.getcubit(context);
       return Scaffold(
 
-        body: Column(mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-          SizedBox(height: 10,),
-         TextButton(onPressed: (){scanQR(c);typeofenter=false;desplayInputField=true; c.rebuild();namecontroller.text='';}, child:Text('${lang?'Scan Qr Code':'فحص الكود'}') ),
-         Text('OR'),
-          TextButton(onPressed: (){typeofenter=true;desplayInputField=true; c.rebuild();}, child:Text('${lang?'Enter Product_Name ':'ادخل اسم المنتج '}')),
-         SizedBox(height: 20,),
-            if(desplayInputField) myinput(typeofenter?namecontroller:codecontroller, TextInputType.text,
-                '${typeofenter?'${lang?'Enter Product_Name ':'ادخل اسم المنتج '}': '${lang?'Enter Product_Code':'ادخل الكود المنتج  '}'}'),
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                SizedBox(height: 10,),
+               TextButton(onPressed: (){scanQR(c);typeofenter=false;desplayInputField=true; c.rebuild();namecontroller.text='';}, child:Text('${lang?'Scan Qr Code':'فحص الكود'}') ),
+               Text('OR'),
+                TextButton(onPressed: (){typeofenter=true;desplayInputField=true; c.rebuild();}, child:Text('${lang?'Enter Product_Name ':'ادخل اسم المنتج '}')),
+               SizedBox(height: 20,),
+                  if(desplayInputField) myinput(typeofenter?namecontroller:codecontroller, TextInputType.text,
+                      '${typeofenter?'${lang?'Enter Product_Name ':'ادخل اسم المنتج '}': '${lang?'Enter Product_Code':'ادخل الكود المنتج  '}'}'),
 
-        SizedBox(height: 10,),
-            loding? CircularProgressIndicator():Container(
-          width: MediaQuery.of(context).size.width*1,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            color: Colors.black,
+              SizedBox(height: 10,),
+                  loding? CircularProgressIndicator():Container(
+                width: MediaQuery.of(context).size.width*1,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.black,
+                ),
+                child :MaterialButton(onPressed:() {
+                  if(namecontroller.text!=''){
+                    c.confrimSales(context, namecontroller.text);
+                    loding=true;
+
+                  }
+                  else{
+                    c.SalesPycode(codecontroller.text, context);
+                    loding=true;
+                  }
+
+
+                  },
+                child: Text('${lang?'Selling_product':'شراء المنتج'}',style: TextStyle(color: Colors.white,fontSize: 22),),
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20),),
+              ),
+              ),
+              SizedBox(height: 20,),
+
+              ],
+      ),
+            ),
           ),
-          child :MaterialButton(onPressed:() {
-            if(namecontroller.text!=''){
-              c.confrimSales(context, namecontroller.text);
-              loding=true;
-
-            }
-            else{
-              c.SalesPycode(codecontroller.text, context);
-              loding=true;
-            }
-
-
-            },
-          child: Text('${lang?'Selling_product':'شراء المنتج'}',style: TextStyle(color: Colors.white,fontSize: 22),),
-            elevation: 0,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20),),
-        ),
-        ),
-        SizedBox(height: 20,),
-
-        ],
-      )
+        )
       );
     }, listener: (context,state){}
       );

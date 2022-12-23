@@ -20,12 +20,19 @@ class LoginScreen extends StatelessWidget {
 
         cubit c = cubit.getcubit(context);
         return Scaffold(
-          appBar: AppBar(
-              titleSpacing: 0,
-              leading: Icon(Icons.login),
-              title: Text('Login',
-                style: TextStyle(color: Colors.white, fontSize: 16),)
+          appBar: PreferredSize(
+            child:  AppBar(
+              centerTitle: true,
+              titleSpacing: MediaQuery.of(context).size.width*.1,
+              backgroundColor: Colors.black,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(
+                  bottomRight:Radius.elliptical(200, 70),
+                  bottomLeft: Radius.elliptical(200, 70)
+              )
 
+              ),
+              title: Text('Login',style: TextStyle(color: Colors.orange,fontSize: 25),),),
+            preferredSize: Size.fromHeight(70),
           ),
           body: Padding(
             padding: const EdgeInsets.all(18.0),
@@ -44,7 +51,7 @@ class LoginScreen extends StatelessWidget {
                     width: MediaQuery.of(context).size.width*1,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      color: Colors.lightBlue,
+                      color: Colors.black,
                     ),
 
                     child: MaterialButton(onPressed: (){
@@ -54,7 +61,7 @@ class LoginScreen extends StatelessWidget {
                       c.Login('${controllerphone.text}', context,);
                     },
                       child: const Text('Login',
-                        style: TextStyle(color: Colors.black87, fontSize: 22),),
+                        style: TextStyle(color: Colors.blue, fontSize: 22),),
                       elevation: 0,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20),),
                     ),

@@ -59,6 +59,45 @@ class OTPScreen extends StatelessWidget {
                   controller: _pinPutController,
 
                   pinAnimationType: PinAnimationType.fade,
+                  onCompleted:(pin) async {
+      try {
+      loding=true;
+      await FirebaseAuth.instance
+          .signInWithCredential(PhoneAuthProvider.credential(
+      verificationId: VerificationCode!, smsCode: pin))
+          .then((value) async {
+      if (value.user != null) {
+      token=CacheHelper.saveData(key: 'UID', value:'$uidofphone');
+      print('^^^^^^^^^^^^^');
+      print(CacheHelper.getData(key: 'UID'));
+      c.updatephone(phone);
+      if(verfiyfromnumber)c.verifiyfromNumberMessage(phone,CacheHelper.getData(key: 'UID') , context);
+      Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => HomPharmcy()),
+      (route) => false);
+      }
+      });
+      }
+      catch (e) {
+      new Future.delayed(Duration(seconds: 60), () {
+      if(verfiyfromnumber){
+      c.DeletUser();
+      Navigator.push(context,MaterialPageRoute(builder: (context) =>RegisterScrenn()));
+      verified=false;
+      tost('This Number Not Correct', Colors.red, 5);
+      verfiyfromnumber=false;
+      }
+      else
+      Navigator.push(context,MaterialPageRoute(builder: (context) =>LoginScreen()));
+      tost('This Number Not Correct', Colors.red, 5);
+      });
+
+
+      }
+      loding=true;
+      c.rebuild();
+      },
                   onSubmitted: (pin) async {
                     try {
                       loding=true;

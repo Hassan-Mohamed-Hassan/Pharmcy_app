@@ -42,9 +42,9 @@ class MyApp extends StatelessWidget {
     @override
     Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        systemNavigationBarColor: Colors.white, // navigation bar color
-        systemNavigationBarIconBrightness: Brightness.dark, // avigation bar icon
-        systemNavigationBarDividerColor: Colors.white,
+        systemNavigationBarColor: Colors.black, // navigation bar color
+        systemNavigationBarIconBrightness: Brightness.light, // avigation bar icon
+        systemNavigationBarDividerColor: Colors.orange,
     ));
     return BlocProvider(
       create: (context)=>cubit(),
@@ -57,13 +57,16 @@ class MyApp extends StatelessWidget {
                 color: Colors.white,
                 iconTheme: IconThemeData(color: Colors.blue,size: 35),
                 systemOverlayStyle:SystemUiOverlayStyle(
-                    statusBarIconBrightness: Brightness.dark,
-                    statusBarColor: Colors.white),
+                    statusBarIconBrightness: Brightness.light,
+                    statusBarColor: Colors.black),
                 elevation: 0,
                 titleTextStyle: TextStyle(color: Colors.black)
             ),
             bottomNavigationBarTheme:BottomNavigationBarThemeData(
-                backgroundColor: Colors.white,
+                backgroundColor: Colors.black,
+                unselectedItemColor: Colors.white,
+                unselectedLabelStyle: TextStyle(color:Colors.orange),
+                selectedItemColor: Colors.orange,
                 elevation: 0
             ),
             listTileTheme: ListTileThemeData(
@@ -74,7 +77,7 @@ class MyApp extends StatelessWidget {
                 height: 30
             )
         ),
-        home:startWidget,
+        home:HomPharmcy(),
 
       ),
     );

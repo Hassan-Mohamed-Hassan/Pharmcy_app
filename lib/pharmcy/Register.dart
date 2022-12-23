@@ -1,5 +1,6 @@
 
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pharmcy_project/concents/BLOC/cubit.dart';
@@ -21,7 +22,20 @@ class RegisterScrenn extends StatelessWidget {
            builder: (context, state){
              cubit cubit1=cubit.getcubit(context);
              return Scaffold(
-                 appBar: AppBar(title: Text('Pharmcy'),leading: Icon(Icons.login_rounded),),
+                 appBar:PreferredSize(
+                   child:  AppBar(
+                     centerTitle:  true,
+                     titleSpacing: MediaQuery.of(context).size.width*.1,
+                     backgroundColor: Colors.black,
+                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(
+                         bottomRight:Radius.elliptical(200, 70),
+                         bottomLeft: Radius.elliptical(200, 70)
+                     )
+
+                     ),
+                     title: Text('Register',style: TextStyle(color: Colors.orange,fontSize: 25),),),
+                   preferredSize: Size.fromHeight(70),
+                 ),
                  body: Padding(
                    padding: const EdgeInsets.only(
                        top:60,
@@ -58,7 +72,7 @@ class RegisterScrenn extends StatelessWidget {
                                type: TextInputType.text,
                                prefix: (Icons.lock),
                                scure:cubit1.scur ,
-                               suffix:IconButton(icon:cubit1.iconpassword,onPressed:(){cubit1.changepasswordrdicon();}),
+                               suffix:IconButton(icon:cubit1.iconpassword,color: Colors.blue,onPressed:(){cubit1.changepasswordrdicon();}),
                                controler:controllerpassword ,
                              ),
                              SizedBox(height: 30,),
@@ -66,7 +80,7 @@ class RegisterScrenn extends StatelessWidget {
                                width: MediaQuery.of(context).size.width*1,
                                decoration: BoxDecoration(
                                  borderRadius: BorderRadius.circular(20),
-                                 color: Colors.lightBlue,
+                                 color: Colors.black,
                                ),
                                child: MaterialButton(onPressed: () {
                                  if(formkey.currentState!.validate()){
@@ -81,7 +95,8 @@ class RegisterScrenn extends StatelessWidget {
                                  }
                                  }
                                    },
-                                 child: Text('${(verified)?'Register':'New Phone'}',style: TextStyle(color: Colors.black87,fontSize: 22),),
+                                 child: Text('${(verified)?'Register':'New Phone'}',style: TextStyle(
+                                     color: Colors.blue,fontSize: 22),),
                                  elevation: 0,
                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20),),
                                ),
