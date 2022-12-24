@@ -1,5 +1,7 @@
 
 
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -446,7 +448,8 @@ emit(scussfirestoretate());
         textCancel: const Text('Cancel'),
         ).then((value){
          int x=int.parse(price);
-         Sum+=x;
+         int sumation=(CacheHelper.getData(key: 'sum'))??0;
+         int Sum=sumation+x;
           CacheHelper.saveData(key: 'sum', value: Sum);
           loding=false;
           emit(scussfirestoredrags());
@@ -634,5 +637,17 @@ void verifiyfromNumberMessage(phone,uidofphone,context){
   Register(controlleremail.text, controllerpassword.text,
       controllerphone.text, controllername.text, context);
 }
+  void delethistoryall24(){
+    Timer mytimer = Timer.periodic(Duration(hours: 24), (timer) {
+      FirebaseFirestore.instance.collection('${CacheHelper.getData(key: 'UID')}-merkting_history').
+      snapshots().forEach((querySnapshot) {
+        for (QueryDocumentSnapshot docSnapshot in querySnapshot.docs) {
+          docSnapshot.reference.delete();
+        }
+
+      });
+      CacheHelper.saveData(key: 'sum', value: 0);
+    });
+  }
 
 }

@@ -1,5 +1,7 @@
 
 
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +49,7 @@ class MyApp extends StatelessWidget {
         systemNavigationBarDividerColor: Colors.orange,
     ));
     return BlocProvider(
-      create: (context)=>cubit(),
+      create: (context)=>cubit()..delethistoryall24(),
       child: MaterialApp(
         title: 'Pharmacy App',
         debugShowCheckedModeBanner: false,
