@@ -79,7 +79,7 @@ class MyApp extends StatelessWidget {
                 height: 30
             )
         ),
-        home:HomPharmcy(),
+        home:startWidget,
 
       ),
     );

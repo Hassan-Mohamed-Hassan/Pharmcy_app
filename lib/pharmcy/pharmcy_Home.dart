@@ -65,7 +65,7 @@ class HomPharmcy extends StatelessWidget {
                 onPressed: () {
                   if (c.bottomsheetShow) {
 
-                      c.updateProfile('euXTEvAKssUhgxvqh2La6zdg1Rl', controllername.text, controllerphone.text,controlleremail.text)
+                      c.updateProfile('${CacheHelper.getData(key: 'UID')}', controllername.text, controllerphone.text,controlleremail.text)
                           .then((value){
               if(fromkay.currentState!.validate()){
                         Navigator.pop(context);
@@ -78,7 +78,7 @@ class HomPharmcy extends StatelessWidget {
 
                   }
                   else {
-                    c.getProfile('euXTEvAKssUhgxvqh2La6zdg1Rl').then((value){
+                    c.getProfile('${CacheHelper.getData(key: 'UID')}').then((value){
                       _scaffoldKey.currentState!.showBottomSheet((context) => Form(
                         key: fromkay,
                         child: Padding(
